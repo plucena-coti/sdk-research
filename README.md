@@ -1,4 +1,4 @@
-# coti-sdk-typescript tests execution report
+# coti-sdk-typescript 1.0.5 project - itUint256 and ctUint256 types
 
 [This directory](../../coti-sdk-typescript/tests) contains unit and integration tests for the COTI SDK Typescript library. Below is a detailed documentation of the tests related to `itUint256` and `ctUint256` types.
 
