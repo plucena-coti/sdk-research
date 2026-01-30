@@ -114,6 +114,7 @@ These tests focus on the cryptographic correctness of the `prepareIT256` and `de
 
 #### 1. `prepareIT256` with variable bit sizes
 **Source**: [Lines 771-774](../../coti-sdk-typescript/tests/unit/crypto_utils.test.ts#L771-L774)
+**Function Tested**: [`prepareIT256`](../../coti-sdk-typescript/src/crypto_utils.ts#L494)
 
 *   **Purpose**: To verify that `prepareIT256` correctly handles plaintexts of different bit lengths.
 *   **Method Executed**:
@@ -137,6 +138,7 @@ These tests focus on the cryptographic correctness of the `prepareIT256` and `de
 
 #### 2. `prepareIT256` Error Handling
 **Source**: [Lines 776-794](../../coti-sdk-typescript/tests/unit/crypto_utils.test.ts#L776-L794)
+**Function Tested**: [`prepareIT256`](../../coti-sdk-typescript/src/crypto_utils.ts#L494)
 
 *   **Purpose**: To ensure the function throws a `RangeError` for plaintexts larger than 256 bits.
 *   **Method Executed**: `prepareIT256(PLAINTEXT, ...)`
@@ -146,6 +148,9 @@ These tests focus on the cryptographic correctness of the `prepareIT256` and `de
 
 #### 3. Round-Trip Encryption/Decryption (`prepareIT256` -> `decryptUint256`)
 **Source**: [Lines 796-799](../../coti-sdk-typescript/tests/unit/crypto_utils.test.ts#L796-L799)
+**Functions Tested**: 
+*   [`prepareIT256`](../../coti-sdk-typescript/src/crypto_utils.ts#L494) (Encryption)
+*   [`decryptUint256`](../../coti-sdk-typescript/src/crypto_utils.ts#L286) (Decryption)
 
 *   **Purpose**: To verify that encryption followed by decryption yields the original value.
 *   **Methods Executed**:
