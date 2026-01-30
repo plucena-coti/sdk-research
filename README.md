@@ -3,6 +3,7 @@
 [This directory](../../coti-sdk-typescript/tests) contains unit and integration tests for the COTI SDK Typescript library. Below is a detailed documentation of the tests related to `itUint256` and `ctUint256` types.
 
 ## Table of Contents
+- [Contract Implementation Details](#contract-implementation-details)
 - [Type Definitions](#type-definitions)
     - [itUint256 (Input Text Uint256)](#ituint256-input-text-uint256)
     - [ctUint256 (Cipher Text Uint256)](#ctuint256-cipher-text-uint256)
@@ -17,6 +18,23 @@
 - [Test Execution Report](#test-execution-report)
     - [Reproducing these Results](#reproducing-these-results)
 - [Next Steps for Publishing](#next-steps-for-publishing)
+
+## Contract Implementation Details
+
+The operations and type definitions for `itUint256` and `ctUint256` are implemented in the `coti-contracts` repository.
+
+### Structure Definitions
+Both structures are defined in [`contracts/utils/mpc/MpcCore.sol`](../../coti-contracts/contracts/utils/mpc/MpcCore.sol):
+*   **`ctUint256`**: Composed of two `ctUint128` (High and Low parts).
+*   **`itUint256`**: Contains the `ctUint256 ciphertext` and a `bytes[2][2] signature`.
+
+### Operations
+The logic for handling these types is implemented in the `MpcCore` library:
+*   **`validateCiphertext`**: Converts `itUint256` to `gtUint256` (Garbled Text) by recursively validating the high and low 128-bit parts.
+*   **Encrypted Operations**: Functions like `add`, `sub`, `onBoard`, `offBoard` for `gtUint256` are implemented starting around line 1500.
+
+### Usage Example
+A clear example of how to use these in a contract can be found in [`contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol`](../../coti-contracts/contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol).
 
 ## Type Definitions
 
