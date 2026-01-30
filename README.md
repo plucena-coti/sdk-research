@@ -24,7 +24,7 @@
 The operations and type definitions for `itUint256` and `ctUint256` are implemented in the `coti-contracts` repository.
 
 ### Structure Definitions
-Both structures are defined in [`contracts/utils/mpc/MpcCore.sol`](../../coti-contracts/contracts/utils/mpc/MpcCore.sol):
+Both structures are defined in [`contracts/utils/mpc/MpcCore.sol`](contracts/utils/mpc/MpcCore.sol):
 *   **`ctUint256`**: Composed of two `ctUint128` (High and Low parts).
 *   **`itUint256`**: Contains the `ctUint256 ciphertext` and a `bytes[2][2] signature`.
 
@@ -34,7 +34,7 @@ The logic for handling these types is implemented in the `MpcCore` library:
 *   **Encrypted Operations**: Functions like `add`, `sub`, `onBoard`, `offBoard` for `gtUint256` are implemented starting around line 1500.
 
 ### Usage Example
-A clear example of how to use these in a contract can be found in [`contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol`](../../coti-contracts/contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol).
+A clear example of how to use these in a contract can be found in [`contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol`](contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol).
 
 ## Type Definitions
 
@@ -64,7 +64,7 @@ type ctUint256 = {
 ## Ciphertext and Signature Generation
 
 ### Ciphertext Generation
-**Source**: [`createCiphertext256` (Lines 482-488)](../../coti-sdk-typescript/src/crypto_utils.ts#L482-L488) in `src/crypto_utils.ts`
+**Source**: [`createCiphertext256` (Lines 482-488)](src/crypto_utils.ts#L482-L488) in `src/crypto_utils.ts`
 
 The 256-bit integer is encrypted using a split-key AES approach, handling the value as two 128-bit blocks (High and Low).
 
@@ -79,7 +79,7 @@ The 256-bit integer is encrypted using a split-key AES approach, handling the va
     *   `[CiphertextHigh (16b), rHigh (16b), CiphertextLow (16b), rLow (16b)]`
 
 ### Signature Generation
-**Source**: [`signIT` (Lines 426-431)](../../coti-sdk-typescript/src/crypto_utils.ts#L426-L431) in `src/crypto_utils.ts`
+**Source**: [`signIT` (Lines 426-431)](src/crypto_utils.ts#L426-L431) in `src/crypto_utils.ts`
 
 To ensure integrity and prevent replay attacks, a signature is generated over the transaction parameters.
 
