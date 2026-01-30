@@ -120,17 +120,23 @@ flowchart LR
 
 ## SDK Comparison
 
-This section details the new functions added in this local version of the SDK compared to the latest published version (`@coti-io/coti-sdk-typescript`).
+This section details the new functions added in this local version of the SDK compared to the latest published version (`@coti-io/coti-sdk-typescript@1.0.4`).
 
-| Feature | Published Version | Local Version (`coti-sdk-typescript`) |
+The published version supports up to 128-bit integers using `buildInputText`. The local version extends this to support 256-bit integers with a new split-key encryption scheme and introduces new named functions.
+
+| Feature | Published Version (`1.0.4`) | Local Version (`0.5.5`+) |
 | :--- | :--- | :--- |
-| **Max Integer Encryption** | 128-bit (`prepareIT`) | **256-bit** (`prepareIT256`) |
-| **Encryption Method** | Single block AES-128 | **Split-key AES-128** (High/Low blocks) |
-| **Decryption Support** | `decryptUint` (128-bit) | `decryptUint` (128-bit) & **`decryptUint256`** (256-bit) |
-| **New Functions** | N/A | `prepareIT256`, `decryptUint256`, `createCiphertext256` |
+| **Input Generation** | `buildInputText` | `buildInputText`, **`prepareIT`**, **`prepareIT256`** |
+| **Max Integer Size** | 128-bit | **256-bit** |
+| **Ciphertext Format** | Single `bigint` (128-bit) | `bigint` (128-bit) OR **Struct `{ high, low }`** (256-bit) |
+| **Decryption** | `decryptUint` | `decryptUint`, **`decryptUint256`** |
+| **New Types** | `itUint`, `ctUint` | `itUint`, `ctUint`, **`itUint256`**, **`ctUint256`** |
 
-> [!NOTE]
-> The published version uses `prepareIT` which throws an error for inputs > 128 bits. The local version introduces `prepareIT256` to handle full `uint256` ranges required for advanced contract interactions.
+> [!IMPORTANT]
+> **API Changes**:
+> *   **`prepareIT`**: Included in the local version as an alias/alternative to `buildInputText`.
+> *   **`prepareIT256`**: A completely new function required for encrypting `uint256` values (e.g., ERC20 amounts). It produces a 2-part ciphertext that must be handled differently by the contract.
+> *   **`decryptUint256`**: Added to decrypt the new split-format 256-bit ciphertexts.
 
 ## `itUint256` and `ctUint256` Tests
 
