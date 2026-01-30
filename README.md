@@ -30,9 +30,31 @@ Both structures are defined in [`contracts/utils/mpc/MpcCore.sol`](contracts/uti
 *   **[`itUint256`](contracts/utils/mpc/MpcCore.sol#L77)** (line 77): Contains the `ctUint256 ciphertext` and a `bytes[2][2] signature`.
 
 ### Operations
-The logic for handling these types is implemented in the `MpcCore` library:
-*   **[`validateCiphertext`](contracts/utils/mpc/MpcCore.sol#L1504)** (line 1504): Converts `itUint256` to `gtUint256` (Garbled Text) by recursively validating the high and low 128-bit parts.
-*   **Encrypted Operations**: Functions like [`add`](contracts/utils/mpc/MpcCore.sol#L1593) (line 1593), [`sub`](contracts/utils/mpc/MpcCore.sol#L1650) (line 1650), [`onBoard`](contracts/utils/mpc/MpcCore.sol#L1521) (line 1521), and [`offBoard`](contracts/utils/mpc/MpcCore.sol#L1530) (line 1530) for `gtUint256`.
+The logic for handling these types is implemented in the `MpcCore` library. Below is a summary of the supported 256-bit operations for `gtUint256`:
+
+#### 1. Arithmetic & Bitwise
+*   **Arithmetic**: `add` (Addition), `sub` (Subtraction), `mul` (Multiplication).
+    > [!NOTE]
+    > `div` (Division) and `rem` (Remainder) are **NOT** implemented for `gtUint256`.
+*   **Bitwise**: `and` (AND), `or` (OR), `xor` (XOR).
+*   **Shifts**: `shl` (Shift Left), `shr` (Shift Right).
+
+#### 2. Comparisons
+*   **Equality**: `eq` (==), `ne` (!=).
+*   **Relational**: `gt` (>), `ge` (>=), `lt` (<), `le` (<=).
+*   **Selection**: `min` (Minimum), `max` (Maximum), `mux` (Multiplexer/Select).
+
+#### 3. Input/Output & Conversions
+*   **`validateCiphertext`**: `itUint256` → `gtUint256` (Validates and converts input).
+*   **`onBoard`**: `ctUint256` → `gtUint256` (Converts ciphertext to garbled text).
+*   **`offBoard`**: `gtUint256` → `ctUint256` (Converts garbled text back to ciphertext).
+*   **`offBoardToUser`**: `gtUint256` → `ctUint256` (Re-encrypts the result for a specific user).
+*   **`setPublic256`**: `uint256` → `gtUint256` (Converts a public value to garbled text).
+*   **`decrypt`**: `gtUint256` → `uint256` (Decrypts garbled text to public value; usually for tests/debug).
+
+#### 4. Randomness
+*   **`rand256`**: Generates a random `gtUint256`.
+*   **`randBoundedBits256`**: Generates a random `gtUint256` with a specific bit size.
 
 ### Usage Example
 A clear example of how to use these in a contract can be found in [`contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol`](contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol).
