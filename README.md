@@ -30,8 +30,8 @@ Both structures are defined in [`contracts/utils/mpc/MpcCore.sol`](contracts/uti
 
 ### Operations
 The logic for handling these types is implemented in the `MpcCore` library:
-*   **`validateCiphertext`**: Converts `itUint256` to `gtUint256` (Garbled Text) by recursively validating the high and low 128-bit parts.
-*   **Encrypted Operations**: Functions like `add`, `sub`, `onBoard`, `offBoard` for `gtUint256` are implemented starting around line 1500.
+*   **[`validateCiphertext`](contracts/utils/mpc/MpcCore.sol#L1504)** (line 1504): Converts `itUint256` to `gtUint256` (Garbled Text) by recursively validating the high and low 128-bit parts.
+*   **Encrypted Operations**: Functions like [`add`](contracts/utils/mpc/MpcCore.sol#L1593) (line 1593), [`sub`](contracts/utils/mpc/MpcCore.sol#L1650) (line 1650), [`onBoard`](contracts/utils/mpc/MpcCore.sol#L1521) (line 1521), and [`offBoard`](contracts/utils/mpc/MpcCore.sol#L1530) (line 1530) for `gtUint256`.
 
 ### Usage Example
 A clear example of how to use these in a contract can be found in [`contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol`](contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol).
