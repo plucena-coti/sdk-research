@@ -16,6 +16,7 @@
     - [Integration Tests: tests/integration/format.compatibility.test.ts](#integration-tests-testsintegrationformatcompatibilitytestts)
 - [Test Execution Report](#test-execution-report)
     - [Reproducing these Results](#reproducing-these-results)
+- [Next Steps for Publishing](#next-steps-for-publishing)
 
 ## Type Definitions
 
@@ -293,3 +294,25 @@ testValues.forEach(test => {
 ```bash
 npx ts-node generate_report.ts
 ```
+
+## Next Steps for Publishing
+
+To release these changes as a new version of the `@coti-io/coti-sdk-typescript` package:
+
+1.  **Run Tests**: Ensure all unit and integration tests pass.
+    ```bash
+    npm test
+    ```
+2.  **Increment Version**: Update the `version` field in `package.json` according to Semantic Versioning (e.g., `0.6.0` or `1.1.0` since this adds new features).
+    ```bash
+    npm version minor
+    ```
+3.  **Build**: Compile the TypeScript source code to JavaScript (outputs to `/dist`).
+    ```bash
+    npm run build
+    ```
+4.  **Publish**: Push the new version to the npm registry.
+    ```bash
+    npm publish --access public
+    ```
+    *(Ensure you are logged in via `npm login` and have permissions for the `@coti-io` organization)*.
