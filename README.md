@@ -4,7 +4,7 @@
 
 ## Table of Contents
 - [Contract Implementation Details](#contract-implementation-details)
-- [Type Definitions](#type-definitions)
+- [/coti-sdk-typescript type definitions](#coti-sdk-typescript-type-definitions)
     - [itUint256 (Input Text Uint256)](#ituint256-input-text-uint256)
     - [ctUint256 (Cipher Text Uint256)](#ctuint256-cipher-text-uint256)
 - [Ciphertext and Signature Generation](#ciphertext-and-signature-generation)
@@ -36,7 +36,7 @@ The logic for handling these types is implemented in the `MpcCore` library:
 ### Usage Example
 A clear example of how to use these in a contract can be found in [`contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol`](contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol).
 
-## Type Definitions
+## /coti-sdk-typescript type definitions
 
 ### `itUint256` (Input Text Uint256)
 Represents the input structure required for sending an encrypted 256-bit unsigned integer to a contract. It includes the split ciphertext and a signature for integrity.
