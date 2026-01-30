@@ -37,6 +37,14 @@ The logic for handling these types is implemented in the `MpcCore` library:
 ### Usage Example
 A clear example of how to use these in a contract can be found in [`contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol`](contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol).
 
+This contract demonstrates several key operations for `gtUint256`:
+
+*   **`validateCiphertextTest`**: Accepts an array of `itUint256` inputs, validates them into `gtUint256` using `MpcCore.validateCiphertext`, and decrypts them back to `uint256`.
+*   **`setPublicTest`**:  Converts an array of public `uint256` values into `gtUint256` using `MpcCore.setPublic256` and decrypts them.
+*   **`offBoardToUserTest`**:  Demonstrates taking a public value, converting it to `gtUint256`, and then re-encrypting it for the caller (offboarding) using `MpcCore.offBoardToUser`.
+*   **`transferTest`**:  Simulates a transfer operation. It takes sender balance (`a`), receiver balance (`b`), and an transfer amount, all as public integers. It converts them to `gtUint256`, performs an encrypted transfer using `MpcCore.transfer`, and decrypts the results (new balances and success status).
+*   **`transferWithAllowanceTest`**:  Similar to `transferTest` but includes an allowance check, employing `MpcCore.transferWithAllowance`.
+
 ## /coti-sdk-typescript type definitions
 
 ### `itUint256` (Input Text Uint256)
