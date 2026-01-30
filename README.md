@@ -2,6 +2,21 @@
 
 [This directory](../../coti-sdk-typescript/tests) contains unit and integration tests for the COTI SDK Typescript library. Below is a detailed documentation of the tests related to `itUint256` and `ctUint256` types.
 
+## Table of Contents
+- [Type Definitions](#type-definitions)
+    - [itUint256 (Input Text Uint256)](#ituint256-input-text-uint256)
+    - [ctUint256 (Cipher Text Uint256)](#ctuint256-cipher-text-uint256)
+- [Ciphertext and Signature Generation](#ciphertext-and-signature-generation)
+    - [Ciphertext Generation](#ciphertext-generation)
+    - [Signature Generation](#signature-generation)
+    - [Process Visualized](#process-visualized)
+- [SDK Comparison](#sdk-comparison)
+- [itUint256 and ctUint256 Tests](#ituint256-and-ctuint256-tests)
+    - [Unit Tests: tests/unit/crypto\_utils.test.ts](#unit-tests-testsunitcrypto_utilstestts)
+    - [Integration Tests: tests/integration/format.compatibility.test.ts](#integration-tests-testsintegrationformatcompatibilitytestts)
+- [Test Execution Report](#test-execution-report)
+    - [Reproducing these Results](#reproducing-these-results)
+
 ## Type Definitions
 
 ### `itUint256` (Input Text Uint256)
@@ -102,6 +117,20 @@ flowchart LR
     style S fill:#f9f,stroke:#333
     style Sig fill:#bbf,stroke:#333
 ```
+
+## SDK Comparison
+
+This section details the new functions added in this local version of the SDK compared to the latest published version (`@coti-io/coti-sdk-typescript`).
+
+| Feature | Published Version | Local Version (`coti-sdk-typescript`) |
+| :--- | :--- | :--- |
+| **Max Integer Encryption** | 128-bit (`prepareIT`) | **256-bit** (`prepareIT256`) |
+| **Encryption Method** | Single block AES-128 | **Split-key AES-128** (High/Low blocks) |
+| **Decryption Support** | `decryptUint` (128-bit) | `decryptUint` (128-bit) & **`decryptUint256`** (256-bit) |
+| **New Functions** | N/A | `prepareIT256`, `decryptUint256`, `createCiphertext256` |
+
+> [!NOTE]
+> The published version uses `prepareIT` which throws an error for inputs > 128 bits. The local version introduces `prepareIT256` to handle full `uint256` ranges required for advanced contract interactions.
 
 ## `itUint256` and `ctUint256` Tests
 
