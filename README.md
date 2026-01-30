@@ -25,6 +25,7 @@ The operations and type definitions for `itUint256` and `ctUint256` are implemen
 
 ### Structure Definitions
 Both structures are defined in [`contracts/utils/mpc/MpcCore.sol`](contracts/utils/mpc/MpcCore.sol):
+*   **[`gtUint256`](contracts/utils/mpc/MpcCore.sol#L18)** (line 18): Garbled Text 256-bit integer, composed of two `gtUint128` (High and Low parts).
 *   **[`ctUint256`](contracts/utils/mpc/MpcCore.sol#L42)** (line 42): Composed of two `ctUint128` (High and Low parts).
 *   **[`itUint256`](contracts/utils/mpc/MpcCore.sol#L77)** (line 77): Contains the `ctUint256 ciphertext` and a `bytes[2][2] signature`.
 
