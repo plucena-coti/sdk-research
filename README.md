@@ -441,3 +441,54 @@ async decryptValue256(ciphertext: ctUint256): Promise<bigint>
 ### Test Coverage
 *   **`JsonRpcSigner`**: 256-bit operations are fully tested in [`test/jsonRpcSigner.test.ts`](tests/coti-ethers/jsonRpcSigner.test.ts).
 *   **`Wallet`**: Currently lacks specific tests for 256-bit operations (only 128-bit operations are tested in [`test/wallet.test.ts`](tests/coti-ethers/wallet.test.ts)).
+
+---
+
+## Critique & Improvement Suggestions
+
+This section provides an objective analysis of the current `itUint256`/`ctUint256` implementation, highlighting areas for improvement.
+
+### Areas of Concern
+
+#### 1. **Missing Operations**
+The contract implementation (`MpcCore.sol`) explicitly **does not support `div` and `rem`** for `gtUint256`. This is a significant limitation for financial applications that require division (e.g., fee calculations, percentage splits).
+
+> [!WARNING]
+> Applications requiring encrypted division must find workarounds (e.g., pre-computing values off-chain or using multiplication by inverses).
+
+#### 2. **Incomplete Test Coverage**
+*   **`Wallet` class** in `coti-ethers` has no unit tests for `encryptValue256` or `decryptValue256`. This creates risk when using `Wallet` in server-side or automated scripts.
+*   **Integration tests** do not cover end-to-end contract interactions—only format validation.
+*   **Error path coverage** is minimal (only overflow is tested, not invalid key formats, signature mismatches, etc.).
+
+#### 3. **API Duplication**
+The SDK offers both `buildInputText` (original) and `prepareIT` (new alias) for 128-bit values. This duplication can cause confusion for developers.
+
+#### 4. **Documentation Gaps**
+*   No documented gas cost comparisons for 256-bit vs. 128-bit operations.
+*   Missing migration guide for upgrading from 128-bit to 256-bit types.
+*   The `signIT` function's role in replay attack prevention is mentioned but not thoroughly explained.
+
+#### 5. **Security Considerations Not Addressed**
+*   **Key rotation**: No guidance on how users should handle AES key rotation.
+*   **Signature replay**: While signatures include contract address and function selector, there's no explicit nonce or timestamp to prevent cross-contract replay attacks if the same selector is used.
+
+### Recommended Improvements
+
+| Priority | Area | Suggestion |
+|:---:|:---|:---|
+| **High** | Testing | Add 256-bit tests for `Wallet` class in `coti-ethers`. |
+| **High** | Testing | Create E2E tests that deploy `Miscellaneous256BitTestsContract` and call operations. |
+| **Medium** | SDK | Deprecate `buildInputText` in favor of `prepareIT` for consistency. |
+| **Medium** | Contracts | Document (or implement) workarounds for missing `div`/`rem` operations. |
+| **Medium** | Docs | Add gas benchmarks for 256-bit operations vs. 128-bit. |
+| **Low** | Docs | Add a migration guide for existing 128-bit applications. |
+| **Low** | API | Consider adding `prepareIT128` as an explicit alias to match `prepareIT256` naming. |
+
+### Future Considerations
+
+1.  **Batch Operations**: Consider adding batch encryption/decryption for multiple values to reduce overhead.
+2.  **Streaming Decryption**: For large datasets, a streaming API could be more memory-efficient than loading all ciphertexts at once.
+3.  **WebAssembly Build**: Providing a WASM version of the crypto utilities could improve performance in browser environments.
+4.  **Hardware Wallet Support**: `JsonRpcSigner` supports browser wallets, but hardware wallet flows (Ledger/Trezor) may require additional testing.
+
