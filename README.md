@@ -461,8 +461,12 @@ The contract implementation (`MpcCore.sol`) explicitly **does not support `div` 
 *   **Integration tests** do not cover end-to-end contract interactions—only format validation.
 *   **Error path coverage** is minimal (only overflow is tested, not invalid key formats, signature mismatches, etc.).
 
-#### 3. **API Duplication**
-The SDK offers both `buildInputText` (original) and `prepareIT` (new alias) for 128-bit values. This duplication can cause confusion for developers.
+#### 3. **API Duplication & Inconsistency**
+The SDK offers both `buildInputText` and `prepareIT` for similar purposes, but they have different limitations:
+*   **`buildInputText`**: Strictly limited to **64-bit** values (throws error for larger).
+*   **`prepareIT`**: Supports up to **128-bit** values.
+*   **`prepareIT256`**: Supports up to **256-bit** values.
+This inconsistency can lead to runtime errors if developers assume `buildInputText` works for all "standard" inputs.
 
 #### 4. **Documentation Gaps**
 *   No documented gas cost comparisons for 256-bit vs. 128-bit operations.
