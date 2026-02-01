@@ -21,6 +21,8 @@
 - [Test Execution Report](#test-execution-report)
     - [Reproducing these Results](#reproducing-these-results)
 - [Next Steps for Publishing](#next-steps-for-publishing)
+- [Changes to `@coti-ethers`](#changes-to-coti-ethers)
+- [Critique & Improvement Suggestions](#critique--improvement-suggestions)
 
 ## Contract Implementation Details
 
