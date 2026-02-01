@@ -1,6 +1,6 @@
 # coti-sdk-typescript 1.0.5 project - itUint256 and ctUint256 types
 
-[This directory](../../coti-sdk-typescript/tests) contains unit and integration tests for the COTI SDK Typescript library. Below is a detailed documentation of the tests related to `itUint256` and `ctUint256` types.
+[This directory](tests) contains unit and integration tests for the COTI SDK Typescript library. Below is a detailed documentation of the tests related to `itUint256` and `ctUint256` types.
 
 ## Table of Contents
 - [Contract Implementation Details](#contract-implementation-details)
@@ -230,13 +230,13 @@ The published version supports up to 128-bit integers using `buildInputText`. Th
 
 These tests verify the functionality of 256-bit integer encryption (`prepareIT256`) and decryption (`decryptUint256`), as well as the structure of the resulting types.
 
-### Unit Tests: [tests/unit/crypto_utils.test.ts](../../coti-sdk-typescript/tests/unit/crypto_utils.test.ts)
+### Unit Tests: [tests/unit/crypto_utils.test.ts](tests/coti-sdk-typescript/unit/crypto_utils.test.ts)
 
 These tests focus on the cryptographic correctness of the `prepareIT256` and `decryptUint256` functions.
 
 #### 1. `prepareIT256` with variable bit sizes
-**Source**: [Lines 771-774](../../coti-sdk-typescript/tests/unit/crypto_utils.test.ts#L771-L774)
-**Function Tested**: [`prepareIT256`](../../coti-sdk-typescript/src/crypto_utils.ts#L494)
+**Source**: [Lines 771-774](tests/coti-sdk-typescript/unit/crypto_utils.test.ts#L771-L774)
+**Function Tested**: [`prepareIT256`](src/crypto_utils.ts#L494)
 
 *   **Purpose**: To verify that `prepareIT256` correctly handles plaintexts of different bit lengths.
 *   **Method Executed**:
@@ -259,8 +259,8 @@ These tests focus on the cryptographic correctness of the `prepareIT256` and `de
     *   `signature` is a non-empty `Uint8Array`.
 
 #### 2. `prepareIT256` Error Handling
-**Source**: [Lines 776-794](../../coti-sdk-typescript/tests/unit/crypto_utils.test.ts#L776-L794)
-**Function Tested**: [`prepareIT256`](../../coti-sdk-typescript/src/crypto_utils.ts#L494)
+**Source**: [Lines 776-794](tests/coti-sdk-typescript/unit/crypto_utils.test.ts#L776-L794)
+**Function Tested**: [`prepareIT256`](src/crypto_utils.ts#L494)
 
 *   **Purpose**: To ensure the function throws a `RangeError` for plaintexts larger than 256 bits.
 *   **Method Executed**: `prepareIT256(PLAINTEXT, ...)`
@@ -269,10 +269,10 @@ These tests focus on the cryptographic correctness of the `prepareIT256` and `de
 *   **Expected Results**: Throws `RangeError` with message "Plaintext size must be 256 bits or smaller".
 
 #### 3. Round-Trip Encryption/Decryption (`prepareIT256` -> `decryptUint256`)
-**Source**: [Lines 796-799](../../coti-sdk-typescript/tests/unit/crypto_utils.test.ts#L796-L799)
+**Source**: [Lines 796-799](tests/coti-sdk-typescript/unit/crypto_utils.test.ts#L796-L799)
 **Functions Tested**: 
-*   [`prepareIT256`](../../coti-sdk-typescript/src/crypto_utils.ts#L494) (Encryption)
-*   [`decryptUint256`](../../coti-sdk-typescript/src/crypto_utils.ts#L286) (Decryption)
+*   [`prepareIT256`](src/crypto_utils.ts#L494) (Encryption)
+*   [`decryptUint256`](src/crypto_utils.ts#L286) (Decryption)
 
 *   **Purpose**: To verify that encryption followed by decryption yields the original value.
 *   **Methods Executed**:
@@ -287,7 +287,7 @@ These tests focus on the cryptographic correctness of the `prepareIT256` and `de
     *   `USER_KEY`: Matching the key used in `sender` for `prepareIT256`.
 *   **Expected Results**: `decrypted === PLAINTEXT` for all cases.
 
-### Integration Tests: [tests/integration/format.compatibility.test.ts](../../coti-sdk-typescript/tests/integration/format.compatibility.test.ts)
+### Integration Tests: [tests/integration/format.compatibility.test.ts](tests/coti-sdk-typescript/integration/format.compatibility.test.ts)
 
 These tests focus on the structure and format compatibility of the produced objects, ensuring they align with contract expectations (struct consistency).
 
@@ -439,5 +439,5 @@ async decryptValue256(ciphertext: ctUint256): Promise<bigint>
 *   **Prerequisite**: The wallet/signer must be onboarded (have a user AES key).
 
 ### Test Coverage
-*   **`JsonRpcSigner`**: 256-bit operations are fully tested in [`test/jsonRpcSigner.test.ts`](../../coti-ethers/test/jsonRpcSigner.test.ts).
-*   **`Wallet`**: Currently lacks specific tests for 256-bit operations (only 128-bit operations are tested in [`test/wallet.test.ts`](../../coti-ethers/test/wallet.test.ts)).
+*   **`JsonRpcSigner`**: 256-bit operations are fully tested in [`test/jsonRpcSigner.test.ts`](tests/coti-ethers/jsonRpcSigner.test.ts).
+*   **`Wallet`**: Currently lacks specific tests for 256-bit operations (only 128-bit operations are tested in [`test/wallet.test.ts`](tests/coti-ethers/wallet.test.ts)).
