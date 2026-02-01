@@ -4,6 +4,9 @@
 
 ## Table of Contents
 - [Contract Implementation Details](#contract-implementation-details)
+    - [Operations](#operations)
+    - [Client-Side Execution Example](#client-side-execution-example-using-coti-ethers)
+    - [Usage Example](#usage-example)
 - [/coti-sdk-typescript type definitions](#coti-sdk-typescript-type-definitions)
     - [itUint256 (Input Text Uint256)](#ituint256-input-text-uint256)
     - [ctUint256 (Cipher Text Uint256)](#ctuint256-cipher-text-uint256)
@@ -55,6 +58,40 @@ The logic for handling these types is implemented in the `MpcCore` library. Belo
 #### 4. Randomness
 *   **`rand256`**: Generates a random `gtUint256`.
 *   **`randBoundedBits256`**: Generates a random `gtUint256` with a specific bit size.
+
+### Client-Side Execution Example (using `@coti-ethers`)
+
+Arithmetic and bitwise operations are **not** executed directly in the client-side JavaScript/TypeScript code. Instead, you use `@coti-ethers` to deploy and call a Smart Contract that implements these operations using `MpcCore.sol`.
+
+**The Process:**
+1.  **Write a Solidity Contract**: Create a contract that imports `MpcCore.sol` and exposes functions to call `MpcCore.add(...)`, `MpcCore.sub(...)`, etc.
+2.  **Generate Input (Client-Side)**: Use `@coti-io/coti-sdk-typescript` to create an encrypted input (`itUint256`).
+3.  **Call Contract (Client-Side)**: Use `@coti-ethers` to send a transaction to your contract with that input.
+4.  **Execute (On-Chain)**: The network executes the operation securely on the MPC nodes.
+5.  **Decrypt Result (Client-Side)**: Use `@coti-io/coti-sdk-typescript` to decrypt the result returned by the contract (after it's offboarded).
+
+**Conceptual Example:**
+
+```typescript
+import { prepareIT256, decryptUint256 } from '@coti-io/coti-sdk-typescript';
+import { Contract, Wallet } from 'ethers'; // or coti-ethers
+
+// 1. Prepare Input (Client)
+// Encrypt the value 100
+const { ciphertext, signature } = prepareIT256(100n, sender, contractAddress, functionSelector);
+
+// 2. Call Contract (Using coti-ethers)
+// This sends the tx to the blockchain where 'MpcCore.add' is actually run
+const tx = await myContract.addEncryptedValues(
+    { ciphertext, signature }, // itUint256
+    someOtherEncryptedValue    // gtUint256 (internal) or another input
+);
+
+// 3. Decrypt Result (Client-Side)
+const result = await tx.wait();
+// ... logic to parse event or view function result ...
+const decrypted = decryptUint256(resultCiphertext, userKey);
+```
 
 ### Usage Example
 A clear example of how to use these in a contract can be found in [`contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol`](contracts/mocks/utils/mpc/Miscellaneous256BitTestsContract.sol).
