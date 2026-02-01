@@ -401,4 +401,39 @@ To release these changes as a new version of the `@coti-io/coti-sdk-typescript` 
     ```bash
     npm publish --access public
     ```
-    *(Ensure you are logged in via `npm login` and have permissions for the `@coti-io` organization)*.
+## Changes to `@coti-ethers`
+
+To support the new 256-bit types and operations, the `@coti-ethers` library has been updated with new methods in both `Wallet` and `JsonRpcSigner` classes.
+
+### New Exports
+The library now re-exports the following types from `@coti-io/coti-sdk-typescript`:
+*   `itUint256`
+*   `ctUint256`
+
+### New Methods
+
+Both `Wallet` (for direct private key usage) and `JsonRpcSigner` (for browser wallets like MetaMask) now support:
+
+#### 1. `encryptValue256`
+Encrypts a plaintext value (integer or bigint) into an `itUint256` structure.
+
+```typescript
+async encryptValue256(
+    plaintextValue: bigint | number,
+    contractAddress: string,
+    functionSelector: string
+): Promise<itUint256>
+```
+*   **Input**: Auto-detects bit size. Throws error if value > 256 bits.
+*   **Implementation Difference**:
+    *   **Wallet**: Uses `prepareIT256` directly from the SDK.
+    *   **JsonRpcSigner**: Re-implements the logic internally to support `signMessage()` (personal_sign) which is required for browser wallets, as they don't expose raw private keys.
+
+#### 2. `decryptValue256`
+Decrypts a `ctUint256` ciphertext back to a `bigint`.
+
+```typescript
+async decryptValue256(ciphertext: ctUint256): Promise<bigint>
+```
+*   **Input**: Must be a valid `ctUint256` object `{ ciphertextHigh, ciphertextLow }`.
+*   **Prerequisite**: The wallet/signer must be onboarded (have a user AES key).
