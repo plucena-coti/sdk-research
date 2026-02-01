@@ -437,3 +437,7 @@ async decryptValue256(ciphertext: ctUint256): Promise<bigint>
 ```
 *   **Input**: Must be a valid `ctUint256` object `{ ciphertextHigh, ciphertextLow }`.
 *   **Prerequisite**: The wallet/signer must be onboarded (have a user AES key).
+
+### Test Coverage
+*   **`JsonRpcSigner`**: 256-bit operations are fully tested in [`test/jsonRpcSigner.test.ts`](../../coti-ethers/test/jsonRpcSigner.test.ts).
+*   **`Wallet`**: Currently lacks specific tests for 256-bit operations (only 128-bit operations are tested in [`test/wallet.test.ts`](../../coti-ethers/test/wallet.test.ts)).
